@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node database.js"
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +14,7 @@
   "dependencies": {
     "dotenv": "^16.0.1",
     "env": "^0.0.2",
+    "express": "^5.0.0-beta.1",
     "mysql2": "^2.3.3"
   },
   "devDependencies": {
