@@ -12,7 +12,7 @@ app.use(express.json());
 
 //enable this when you are listening on local port
 //let port = 3000;
-port = process.env.PORT || 80;
+let port = process.env.PORT || 80;
 app.get("/notes", async (req, res) => {
   const notes = await getNotes();
   res.send(notes);
