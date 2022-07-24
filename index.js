@@ -1,15 +1,18 @@
 import dotenv from "dotenv";
 import express from "express";
-
+import cors from "cors";
 import { getNotes, getAuthID } from "./database.js";
 
 dotenv.config();
 
 const app = express();
+app.use(cors());
 
 app.use(express.json());
-let port = 3000;
 
+//enable this when you are listening on local port
+//let port = 3000;
+port = process.env.PORT || 80;
 app.get("/notes", async (req, res) => {
   const notes = await getNotes();
   res.send(notes);
