@@ -11,7 +11,8 @@ app.use(express.json());
 let port = process.env.PORT || 3000;
 
 app.get("/notes", async (req, res) => {
-  res.send("Hello from heroku");
+  const notes = await getNotes();
+  res.send(notes);
 });
 
 // app.get("/notes/:id", async (req, res) => {
