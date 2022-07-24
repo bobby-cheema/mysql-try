@@ -36,4 +36,4 @@ export async function getNotes() {
 //   return getNote(id)
 // }
 
-getNotes();
+// getNotes();
