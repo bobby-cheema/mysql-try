@@ -14,7 +14,6 @@ const pool = mysql
 
 export async function getNotes() {
   const [rows] = await pool.query("SELECT * FROM user");
-  console.log(rows);
   return rows;
 }
 
