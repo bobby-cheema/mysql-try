@@ -29,6 +29,29 @@ export async function getAuthID(fbID) {
   return AuthID[0];
 }
 
+// return all sheets  for a driver
+export async function getsheets(id) {
+  const sheets = await pool.query(
+    ` SELECT * FROM runsheet where  driver_fk=?  `,
+    [id]
+  );
+  console.log("fromdb ", sheets[0]);
+  return sheets[0];
+}
+
+export async function createRunsheet(startTime, finishTime, rest, comment, id) {
+  console.log("in func", startTime, finishTime, rest, id, comment);
+  const [result] = await pool.query(
+    `
+  INSERT INTO runsheet (start,finish,rest,driver_fk, comment, approved)
+  VALUES (?, ?,?,?,?,?)
+  `,
+    [startTime, finishTime, rest, id, comment, 0]
+  );
+
+  console.log(result.insertId);
+}
+
 // export async function getNote(id) {
 //   const [rows] = await pool.query(`
 //   SELECT *
