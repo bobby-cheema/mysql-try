@@ -1,7 +1,14 @@
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
-import { getNotes, getAuthID, createRunsheet, getsheets } from "./database.js";
+import {
+  getNotes,
+  getAuthID,
+  createRunsheet,
+  getsheets,
+  deleteid,
+  getsheetsbydate,
+} from "./database.js";
 
 dotenv.config();
 
@@ -45,6 +52,23 @@ app.post("/AddRunsheet", async (req, res) => {
 app.get("/getsheets/:id", async (req, res) => {
   const result = await getsheets(req.params.id);
   console.log("to express from mysql", result);
+  res.send(result);
+});
+// Delete one id
+
+app.delete("/delete/:id", async (req, res) => {
+  const id = req.params.id;
+  const returnvalue = await deleteid(id);
+  res.send(returnvalue);
+});
+
+// select runsheet by date
+app.get("/getsheetsbydate/:start/:end/:id", async (req, res) => {
+  //const result = await getsheets(req.params.id);
+  //console.log("to express from mysql", result);
+
+  const { start, end, id } = req.params;
+  const result = await getsheetsbydate(start, end, id);
   res.send(result);
 });
 

@@ -29,6 +29,17 @@ export async function getAuthID(fbID) {
   return AuthID[0];
 }
 
+// get all date range sheets for a driver
+
+export async function getsheetsbydate(start, end, id) {
+  const sheets = await pool.query(
+    ` SELECT * FROM runsheet where  driver_fk=? AND start >= ? AND finish <= ?  order by runsheet.start `,
+    // ` SELECT * FROM runsheet where  driver_fk=? AND start between date(? ) and date(?)`,
+    [id, start, end]
+  );
+  console.log("fromdb ", sheets[0]);
+  return sheets[0];
+}
 // return all sheets  for a driver
 export async function getsheets(id) {
   const sheets = await pool.query(
@@ -37,6 +48,17 @@ export async function getsheets(id) {
   );
   console.log("fromdb ", sheets[0]);
   return sheets[0];
+}
+
+//  delete one id
+
+export async function deleteid(id) {
+  const returnvalue = await pool.query(
+    `DELETE  FROM runsheet where  runsheet_id=?  `,
+    [id]
+  );
+  console.log("fromdb ", returnvalue);
+  return returnvalue;
 }
 
 export async function createRunsheet(startTime, finishTime, rest, comment, id) {
