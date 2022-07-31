@@ -5,14 +5,14 @@ dotenv.config();
 
 const pool = mysql
   .createPool({
-    // host: process.env.MYSQL_HOST,
-    // user: process.env.MYSQL_USER,
-    // password: process.env.MYSQL_PASSWORD,
-    // database: process.env.MYSQL_DATABASE,
-    host: "localhost",
-    user: "root",
-    password: "laddo123",
-    database: "my_db",
+    host: process.env.MYSQL_HOST,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DATABASE,
+    // host: "localhost",
+    // user: "root",
+    // password: "laddo123",
+    // database: "my_db",
   })
   .promise();
 export async function getNotes() {
