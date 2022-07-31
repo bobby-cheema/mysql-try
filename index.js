@@ -8,6 +8,11 @@ import {
   getsheets,
   deleteid,
   getsheetsbydate,
+  getAllusers,
+  getLastWeekHrs,
+  getAllUnapprove,
+  approveOne,
+  updateAndApprove,
 } from "./database.js";
 
 dotenv.config();
@@ -24,6 +29,40 @@ app.get("/notes", async (req, res) => {
   const notes = await getNotes();
   res.send(notes);
 });
+
+// update approve one
+app.put("/approveOne/:runsheet_id", async (req, res) => {
+  console.log("EXPRESS", req.params.runsheet_id);
+  const Approve = await approveOne(req.params.runsheet_id);
+  res.send(Approve);
+});
+// update runsheet for admin and approve it
+
+app.put("/updateAndApprove", async (req, res) => {
+  const { id, start, finish, rest } = req.body;
+  const result = await updateAndApprove(id, start, finish, rest);
+  console.log("id , start,finish,rest", id, start, finish, rest);
+});
+
+// get all unapproved
+app.get("/allunapprove", async (req, res) => {
+  const unapprove = await getAllUnapprove();
+  res.send(unapprove);
+});
+
+// Return Hrs Lastweek for all users
+app.get("/lastweekhrs", async (req, res) => {
+  const lastweekhrs = await getLastWeekHrs();
+  res.send(lastweekhrs);
+});
+
+// Return all users
+
+app.get("/allusers", async (req, res) => {
+  const allusers = await getAllusers();
+  res.send(allusers);
+});
+
 // Return AuthID
 
 app.get("/AuthID/:id", async (req, res) => {

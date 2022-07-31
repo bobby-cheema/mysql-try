@@ -28,6 +28,73 @@ export async function getAuthID(fbID) {
   console.log("fromdb ", AuthID[0]);
   return AuthID[0];
 }
+//  get lastweekhours
+export async function getLastWeekHrs() {
+  const lastweekhrs = await pool.query(`SELECT 
+  TIMESTAMPDIFF(SECOND,
+      runsheet.start,
+      runsheet.finish) / (60 * 60) AS HRS,
+  user.name,
+  runsheet.start
+FROM
+  runsheet
+      JOIN
+  user ON runsheet.driver_fk = user.id
+WHERE
+  WEEK(runsheet.start) = WEEK(NOW()) - 1`);
+  console.log("fromdb ", lastweekhrs[0]);
+  return lastweekhrs[0];
+}
+
+// approve one
+
+export async function approveOne(id) {
+  const returnvalue = await pool.query(
+    `UPDATE runsheet SET  approved=1  where  runsheet_id=?  `,
+    [id]
+  );
+  console.log("fromdb ", returnvalue);
+  return returnvalue;
+}
+//update and approve
+export async function updateAndApprove(id, start, finish, rest) {
+  const returnvalue = await pool.query(
+    `UPDATE runsheet
+    SET
+    start =?,
+    finish = ?,
+    rest = ?
+    WHERE runsheet_id = ?
+    ;
+     `,
+    [start, finish, rest, id]
+  );
+  console.log("fromdb ", returnvalue);
+  return returnvalue;
+}
+
+//get all runsheets unapproved so far
+export async function getAllUnapprove() {
+  const unapprove = await pool.query(` SELECT 
+  runsheet.runsheet_id,
+  runsheet.start,
+  runsheet.finish,
+  runsheet.rest,
+  runsheet.approved,
+  runsheet.driver_fk,
+  runsheet.comment,
+  user.name
+FROM
+  runsheet
+      JOIN
+  user ON runsheet.driver_fk = user.id
+WHERE
+  runsheet.approved = 0
+ORDER BY user.name ASC
+; `);
+  console.log("fromdb ", unapprove[0]);
+  return unapprove[0];
+}
 
 // get all date range sheets for a driver
 
@@ -48,6 +115,14 @@ export async function getsheets(id) {
   );
   console.log("fromdb ", sheets[0]);
   return sheets[0];
+}
+
+// get all users
+
+export async function getAllusers() {
+  const allusers = await pool.query(` SELECT * FROM user`);
+  console.log("fromdb ", allusers[0]);
+  return allusers[0];
 }
 
 //  delete one id
