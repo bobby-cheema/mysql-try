@@ -13,6 +13,7 @@ import {
   getAllUnapprove,
   approveOne,
   updateAndApprove,
+  getHrsLastWeek,
 } from "./database.js";
 
 dotenv.config();
@@ -28,6 +29,12 @@ let port = process.env.PORT || 80;
 app.get("/notes", async (req, res) => {
   const notes = await getNotes();
   res.send(notes);
+});
+
+//get hours for last week
+app.get("/hrslastweek", async (req, res) => {
+  const hrs = await getHrsLastWeek();
+  res.send(hrs);
 });
 
 // update approve one

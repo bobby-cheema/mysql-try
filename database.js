@@ -5,14 +5,14 @@ dotenv.config();
 
 const pool = mysql
   .createPool({
-    host: process.env.MYSQL_HOST,
-    user: process.env.MYSQL_USER,
-    password: process.env.MYSQL_PASSWORD,
-    database: process.env.MYSQL_DATABASE,
-    // host: "localhost",
-    // user: "root",
-    // password: "laddo123",
-    // database: "my_db",
+    // host: process.env.MYSQL_HOST,
+    // user: process.env.MYSQL_USER,
+    // password: process.env.MYSQL_PASSWORD,
+    // database: process.env.MYSQL_DATABASE,
+    host: "localhost",
+    user: "root",
+    password: "laddo123",
+    database: "my_db",
   })
   .promise();
 export async function getNotes() {
@@ -94,6 +94,27 @@ ORDER BY user.name ASC
 ; `);
   console.log("fromdb ", unapprove[0]);
   return unapprove[0];
+}
+
+// getHrsLastWeek to get hours for the last week
+export async function getHrsLastWeek() {
+  const hrs = await pool.query(
+    `SELECT 
+    driver_fk, 
+    user.name,
+    abs(SUM(TIMEDIFF(start, finish))/10000) AS HRS
+FROM
+    runsheet
+    join user on  runsheet.driver_fk=user.id
+    where 
+    
+start >= DATE_SUB(curdate(),interval 1 WEEK )
+
+GROUP BY driver_fk
+ORDER BY HRS DESC;  `
+  );
+  console.log("fromdb ", hrs[0]);
+  return hrs[0];
 }
 
 // get all date range sheets for a driver
